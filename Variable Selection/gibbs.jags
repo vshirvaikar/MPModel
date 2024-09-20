@@ -1,0 +1,15 @@
+model {
+  for (i in 1:N) {
+    y[i] ~ dnorm(mu[i], tau)
+    mu[i] <- beta0 + sum(beta[1:K] * X[i, 1:K] * gamma[1:K])
+  }
+  
+  beta0 ~ dnorm(0, 0.01)
+  tau ~ dgamma(0.01, 0.01)
+  sigma <- 1 / sqrt(tau)
+  
+  for (j in 1:K) {
+    gamma[j] ~ dbern(0.5)
+    beta[j] ~ dnorm(0, 0.01)
+  }
+}
