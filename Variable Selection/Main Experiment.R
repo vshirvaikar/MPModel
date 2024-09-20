@@ -38,27 +38,12 @@ for(trial in 1:trials){
   }
 }
 
-sel.bic
-sel.aic
+# Calculate average Gibbs sampling posterior probability
 sel.rj1 = apply(sel.rjm, c(1, 2), function(x) mean(x)*100)
 rownames(sel.rj1) = rownames(sel.bic)
 colnames(sel.rj1) = colnames(sel.bic)
+
+# Calculate number of trials with Gibbs probability > 0.5
 sel.rj2 = apply(sel.rjm, c(1, 2), function(x) sum(x >= 0.5))
 rownames(sel.rj2) = rownames(sel.bic)
 colnames(sel.rj2) = colnames(sel.bic)
-
-# Plot variable selection frequencies
-plot.data = melt(sel.rj1)
-names(plot.data) = c("Label", "Variable", "Value")
-plot.data$Value = plot.data$Value/trials
-plot.data$ColorGroup <- ifelse(as.numeric(gsub("X", "", plot.data$Variable)) <= 5, "Highlighted", "Normal")
-ggplot(plot.data, aes(x=Variable, y=Value, fill=ColorGroup)) +
-  geom_bar(stat="identity", position="dodge") + 
-  theme_minimal() + theme(legend.position = "none") +
-  facet_grid(rows = vars(Label), scales = "free_y") +
-  scale_fill_manual(values=c("Highlighted"="black", "Normal"="grey70")) +
-  theme(axis.text.x = element_text(angle=45, hjust=1), 
-        strip.background = element_blank(), 
-        strip.text.x = element_text(size=10, color="black", face="bold")) +
-  #scale_y_continuous(labels = percent, limits = c(0, 1)) + 
-  labs(x = "", y = "Percentage of Trials")
