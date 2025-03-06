@@ -28,6 +28,7 @@ ggplot(df_plot, aes(x=n, y=value, group=variable)) +
   geom_hline(yintercept = 1.5, linetype = "dashed", color = "black")
 
 # Convergence plot for second illustration with 3 components 
+# Convergence plot for third illustration with galaxies data
 tentacles = 100
 df_plot = jellyfish(clust.mp, tentacles)
 jitter <- data.frame(variable = paste0("X", 1:tentacles), 
